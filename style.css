@@ -1,0 +1,18 @@
+h1 {
+  font-size: 1.2em;
+}
+
+.timetable {
+  display: inline-grid;
+  grid-template-columns: auto auto auto auto;
+  column-gap: 0.5em;
+  row-gap: 0.1em;
+}
+
+.waiting-time, .wall-time, .delay {
+  justify-self: right;
+} 
+
+.delay.zero {
+  visibility: collapse;
+}
