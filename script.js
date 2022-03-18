@@ -22,8 +22,10 @@ function formatTime(time) {
 
 async function loadTimetable(stops) {
   const url = `https://transport.tallinn.ee/siri-stop-departures.php?stopid=${stops.join(',')}`;
-  const response = await fetch(url);
-  const data = await response.text();
+  
+  // const response = await fetch(url);
+  // const data = await response.text();
+  const data = await loadUrl(url);
 
   const busRegex = /\w+,([\d\w]+),(\d+),(\d+)/g;
   const stopRegex = /stop,(\d+)\n([\w\p{L}\p{M}\s\.,-]+?)(?=stop|$)/g;
@@ -61,6 +63,22 @@ async function loadTimetable(stops) {
   }
 
   return timetable;
+}
+
+async function loadUrl(url) {
+  return new Promise((resolve, reject) => {
+    let xhr = new XMLHttpRequest();
+    xhr.open('GET', url);
+    xhr.onload = () => {
+      xhr.status === 200
+        ? resolve(xhr.responseText)
+        : reject(xhr.statusText)
+    };
+    xhr.onerror = () => {
+      reject();
+    };
+    xhr.send();
+  });  
 }
 
 function render(stop) {
